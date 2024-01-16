@@ -1,5 +1,6 @@
 {
-    "name": "monolog/monolog",
+    "name": "icoverservices/monolog",
+    "version": "4.4.0",
     "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
     "keywords": ["log", "logging", "psr-3"],
     "homepage": "https://github.com/Seldaek/monolog",

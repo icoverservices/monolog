@@ -36,6 +36,10 @@ enum Level: int
      */
     case Debug = 100;
 
+    case Timer = 150;
+
+    case Event = 160;
+
     /**
      * Interesting events
      *
@@ -82,7 +86,7 @@ enum Level: int
     case Emergency = 600;
 
     /**
-     * @param value-of<self::NAMES>|LogLevel::*|'Debug'|'Info'|'Notice'|'Warning'|'Error'|'Critical'|'Alert'|'Emergency' $name
+     * @param string $name
      * @return static
      */
     public static function fromName(string $name): self
@@ -96,6 +100,8 @@ enum Level: int
             'critical', 'Critical', 'CRITICAL' => self::Critical,
             'alert', 'Alert', 'ALERT' => self::Alert,
             'emergency', 'Emergency', 'EMERGENCY' => self::Emergency,
+            'timer', 'Timer', 'TIMER' => self::Timer,
+            'event', 'Event', 'EVENT' => self::Event,
         };
     }
 
@@ -144,25 +150,27 @@ enum Level: int
             self::Critical => 'CRITICAL',
             self::Alert => 'ALERT',
             self::Emergency => 'EMERGENCY',
+            self::Timer => 'TIMER',
+            self::Event => 'EVENT'
         };
     }
 
     /**
      * Returns the PSR-3 level matching this instance
      *
-     * @phpstan-return \Psr\Log\LogLevel::*
+     * @phpstan-return LogLevel::*
      */
     public function toPsrLogLevel(): string
     {
         return match ($this) {
             self::Debug => LogLevel::DEBUG,
-            self::Info => LogLevel::INFO,
+            self::Info, self::Event, self::Timer => LogLevel::INFO,
             self::Notice => LogLevel::NOTICE,
             self::Warning => LogLevel::WARNING,
             self::Error => LogLevel::ERROR,
             self::Critical => LogLevel::CRITICAL,
             self::Alert => LogLevel::ALERT,
-            self::Emergency => LogLevel::EMERGENCY,
+            self::Emergency => LogLevel::EMERGENCY
         };
     }
 
@@ -174,6 +182,8 @@ enum Level: int
     public function toRFC5424Level(): int
     {
         return match ($this) {
+            self::Event => 9,
+            self::Timer => 8,
             self::Debug => 7,
             self::Info => 6,
             self::Notice => 5,
@@ -187,6 +197,8 @@ enum Level: int
 
     public const VALUES = [
         100,
+        150,
+        160,
         200,
         250,
         300,
@@ -205,5 +217,7 @@ enum Level: int
         'CRITICAL',
         'ALERT',
         'EMERGENCY',
+        'TIMER',
+        'EVENT'
     ];
 }

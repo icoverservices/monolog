@@ -30,7 +30,6 @@ use WeakMap;
  * and uses them to store records that are added to it.
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
- * @final
  */
 class Logger implements LoggerInterface, ResettableInterface
 {
@@ -40,6 +39,9 @@ class Logger implements LoggerInterface, ResettableInterface
      * @deprecated Use \Monolog\Level::Debug
      */
     public const DEBUG = 100;
+
+    public const TIMER = 150;
+    public const EVENT = 160;
 
     /**
      * Interesting events
@@ -114,6 +116,8 @@ class Logger implements LoggerInterface, ResettableInterface
      * @phpstan-var array<int, Level> $rfc_5424_levels
      */
     private const RFC_5424_LEVELS = [
+        9 => Level::Event,
+        8 => Level::Timer,
         7 => Level::Debug,
         6 => Level::Info,
         5 => Level::Notice,
@@ -165,12 +169,13 @@ class Logger implements LoggerInterface, ResettableInterface
     private bool $detectCycles = true;
 
     /**
-     * @param string             $name       The logging channel, a simple descriptive name that is attached to all log records
-     * @param HandlerInterface[] $handlers   Optional stack of handlers, the first one in the array is called first, etc.
-     * @param callable[]         $processors Optional array of processors
-     * @param DateTimeZone|null  $timezone   Optional timezone, if not provided date_default_timezone_get() will be used
+     * @param string $name The logging channel, a simple descriptive name that is attached to all log records
+     * @param HandlerInterface[] $handlers Optional stack of handlers, the first one in the array is called first, etc.
+     * @param callable[] $processors Optional array of processors
+     * @param DateTimeZone|null $timezone Optional timezone, if not provided date_default_timezone_get() will be used
      *
      * @phpstan-param array<(callable(LogRecord): LogRecord)|ProcessorInterface> $processors
+     * @throws \Exception
      */
     public function __construct(string $name, array $handlers = [], array $processors = [], DateTimeZone|null $timezone = null)
     {

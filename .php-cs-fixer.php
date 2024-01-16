@@ -1,7 +1,7 @@
 <?php
 
 $header = <<<EOF
-This file is part of the Monolog package.
+This file is part of the Icoverlog package.
 
 (c) Jordi Boggiano <j.boggiano@seld.be>
 

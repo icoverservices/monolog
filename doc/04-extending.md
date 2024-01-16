@@ -1,6 +1,6 @@
-# Extending Monolog
+# Extending Icoverlog
 
-Monolog is fully extensible, allowing you to adapt your logger to your needs.
+Icoverlog is fully extensible, allowing you to adapt your logger to your needs.
 
 ## Understanding log records
 
@@ -11,20 +11,20 @@ another.
 
 ## Writing your own handler
 
-Monolog provides many built-in handlers. But if the one you need does not
+Icoverlog provides many built-in handlers. But if the one you need does not
 exist, you can write it and use it in your logger. The only requirement is
-to implement `Monolog\Handler\HandlerInterface`.
+to implement `Icoverlog\Handler\HandlerInterface`.
 
 Let's write a PDOHandler to log records to a database. We will extend the
-abstract class provided by Monolog to keep things DRY.
+abstract class provided by Icoverlog to keep things DRY.
 
 ```php
 <?php
 
-use Monolog\Level;
-use Monolog\Logger;
-use Monolog\LogRecord;
-use Monolog\Handler\AbstractProcessingHandler;
+use Icoverlog\Level;
+use Icoverlog\Logger;
+use Icoverlog\LogRecord;
+use Icoverlog\Handler\AbstractProcessingHandler;
 
 class PDOHandler extends AbstractProcessingHandler
 {
@@ -78,7 +78,7 @@ $logger->pushHandler(new PDOHandler(new PDO('sqlite:logs.sqlite')));
 $logger->info('My logger is now ready');
 ```
 
-The `Monolog\Handler\AbstractProcessingHandler` class provides most of the
+The `Icoverlog\Handler\AbstractProcessingHandler` class provides most of the
 logic needed for the handler, including the use of processors and the formatting
 of the record (which is why we use ``$record->formatted`` instead of ``$record->message``).
 

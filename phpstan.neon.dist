@@ -9,16 +9,16 @@ parameters:
 #        - tests/
 
     excludePaths:
-        - 'src/Monolog/Handler/PHPConsoleHandler.php'
+        - 'src/Icoverlog/Handler/PHPConsoleHandler.php'
 
     ignoreErrors:
         - '#zend_monitor_|ZEND_MONITOR_#'
         - '#MongoDB\\(Client|Collection)#'
 
         # Cannot resolve this cleanly as different normalizers return different types but it is safe
-        - message: '#Return type \(string\) of method Monolog\\Formatter\\LineFormatter::normalizeException\(\) should be compatible with return type \(array\) of method Monolog\\Formatter\\NormalizerFormatter::normalizeException\(\)#'
+        - message: '#Return type \(string\) of method Icoverlog\\Formatter\\LineFormatter::normalizeException\(\) should be compatible with return type \(array\) of method Icoverlog\\Formatter\\NormalizerFormatter::normalizeException\(\)#'
           paths:
-            - src/Monolog/Formatter/LineFormatter.php
+            - src/Icoverlog/Formatter/LineFormatter.php
 
         # can be removed when rollbar/rollbar can be added as dev require again (needs to allow monolog 3.x)
         - '#Rollbar\\RollbarLogger#'

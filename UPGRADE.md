@@ -3,33 +3,33 @@
 Overall / notable changes:
 
 - The minimum supported PHP version is now `8.1.0`.
-- `Monolog\Logger::API` can be used to distinguish between a Monolog `3`, `2` or `1`
+- `Icoverlog\Logger::API` can be used to distinguish between a Icoverlog `3`, `2` or `1`
   install when writing integration code.
-- Log records have been converted from an array to a [`Monolog\LogRecord` object](src/Monolog/LogRecord.php)
+- Log records have been converted from an array to a [`Icoverlog\LogRecord` object](src/Icoverlog/LogRecord.php)
   with public (and mostly readonly) properties. e.g. instead of doing
   `$record['context']` use `$record->context`.
   In formatters or handlers if you rather need an array to work with you can use `$record->toArray()`
-  to get back a Monolog 1/2 style record array. This will contain the enum values instead of enum cases
+  to get back a Icoverlog 1/2 style record array. This will contain the enum values instead of enum cases
   in the `level` and `level_name` keys to be more backwards compatible and use simpler data types.
 - `FormatterInterface`, `HandlerInterface`, `ProcessorInterface`, etc. changed to contain `LogRecord $record`
-  instead of `array $record` parameter types. If you want to support multiple Monolog versions this should
+  instead of `array $record` parameter types. If you want to support multiple Icoverlog versions this should
   be possible by type-hinting nothing, or `array|LogRecord` if you support PHP 8.0+. You can then code
-  against the $record using Monolog 2 style as LogRecord implements ArrayAccess for BC.
+  against the $record using Icoverlog 2 style as LogRecord implements ArrayAccess for BC.
   The interfaces do not require a `LogRecord` return type even where it would be applicable, but if you only
-  support Monolog 3 in integration code I would recommend you use `LogRecord` return types wherever fitting
-  to ensure forward compatibility as it may be added in Monolog 4.
-- Log levels are now stored as an enum [`Monolog\Level`](src/Monolog/Level.php)
+  support Icoverlog 3 in integration code I would recommend you use `LogRecord` return types wherever fitting
+  to ensure forward compatibility as it may be added in Icoverlog 4.
+- Log levels are now stored as an enum [`Icoverlog\Level`](src/Icoverlog/Level.php)
 - All properties have had types added, which may require you to do so as well if you extended
-  a Monolog class and declared the same property.
+  a Icoverlog class and declared the same property.
 
 #### Logger
 
 - `Logger::DEBUG`, `Logger::ERROR`, etc. are now deprecated in favor of the `Level` enum.
   e.g. instead of `Logger::WARNING` use `Level::Warning` if you need to pass the enum case
-  to Monolog or one of its handlers, or `Level::Warning->value` if you need the integer
+  to Icoverlog or one of its handlers, or `Level::Warning->value` if you need the integer
   value equal to what `Logger::WARNING` was giving you.
 - `Logger::$levels` has been removed.
-- `Logger::getLevels` has been removed in favor of `Monolog\Level::VALUES` or `Monolog\Level::cases()`.
+- `Logger::getLevels` has been removed in favor of `Icoverlog\Level::VALUES` or `Icoverlog\Level::cases()`.
 - `setExceptionHandler` now requires a `Closure` instance and not just any `callable`.
 
 #### HtmlFormatter
@@ -93,8 +93,8 @@ Overall / notable changes:
 
 ### 2.0.0
 
-- `Monolog\Logger::API` can be used to distinguish between a Monolog `1` and `2`
-  install of Monolog when writing integration code.
+- `Icoverlog\Logger::API` can be used to distinguish between a Icoverlog `1` and `2`
+  install of Icoverlog when writing integration code.
 
 - Removed non-PSR-3 methods to add records, all the `add*` (e.g. `addWarning`)
   methods as well as `emerg`, `crit`, `err` and `warn`.
@@ -117,7 +117,7 @@ Overall / notable changes:
 
 - `HandlerInterface` now requires the `close` method to be implemented. This
   only impacts you if you implement the interface yourself, but you can extend
-  the new `Monolog\Handler\Handler` base class too.
+  the new `Icoverlog\Handler\Handler` base class too.
 
 - There is no more default handler configured on empty Logger instances, if
   you were relying on that you will not get any output anymore, make sure to
@@ -157,7 +157,7 @@ Overall / notable changes:
 
 #### RavenHandler
 
-- Removed deprecated RavenHandler handler, use sentry/sentry 2.x and their Sentry\Monolog\Handler instead
+- Removed deprecated RavenHandler handler, use sentry/sentry 2.x and their Sentry\Icoverlog\Handler instead
 
 #### ElasticSearchHandler
 

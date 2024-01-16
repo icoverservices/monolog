@@ -1,4 +1,4 @@
-# Using Monolog
+# Using Icoverlog
 
 - [Installation](#installation)
 - [Core Concepts](#core-concepts)
@@ -11,7 +11,7 @@
 
 ## Installation
 
-Monolog is available on Packagist ([monolog/monolog](http://packagist.org/packages/monolog/monolog))
+Icoverlog is available on Packagist ([monolog/monolog](http://packagist.org/packages/monolog/monolog))
 and as such installable via [Composer](http://getcomposer.org/).
 
 ```bash
@@ -52,7 +52,7 @@ information (tags, user ip, ..) to the records before they are handled.
 
 ## Log Levels
 
-Monolog supports the logging levels described by [RFC 5424](https://datatracker.ietf.org/doc/html/rfc5424).
+Icoverlog supports the logging levels described by [RFC 5424](https://datatracker.ietf.org/doc/html/rfc5424).
 
 - **DEBUG** (100): Detailed debug information.
 
@@ -83,10 +83,10 @@ Here is a basic setup to log to a file and to firephp on the DEBUG level:
 ```php
 <?php
 
-use Monolog\Level;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\FirePHPHandler;
+use Icoverlog\Level;
+use Icoverlog\Logger;
+use Icoverlog\Handler\StreamHandler;
+use Icoverlog\Handler\FirePHPHandler;
 
 // Create the logger
 $logger = new Logger('my_logger');
@@ -112,7 +112,7 @@ you want to override other configured loggers.
 
 ## Adding extra data in the records
 
-Monolog provides two different ways to add extra information along the simple
+Icoverlog provides two different ways to add extra information along the simple
 textual message.
 
 ### Using the logging context
@@ -147,7 +147,7 @@ $logger->pushProcessor(function ($record) {
 });
 ```
 
-Monolog provides some built-in processors that can be used in your project.
+Icoverlog provides some built-in processors that can be used in your project.
 Look at the [dedicated chapter](https://github.com/Seldaek/monolog/blob/main/doc/02-handlers-formatters-processors.md#processors) for the list.
 
 > Tip: processors can also be registered on a specific handler instead of
@@ -157,7 +157,7 @@ Look at the [dedicated chapter](https://github.com/Seldaek/monolog/blob/main/doc
 
 Channels are a great way to identify to which part of the application a record
 is related. This is useful in big applications (and is leveraged by
-MonologBundle in Symfony).
+IcoverlogBundle in Symfony).
 
 Picture two loggers sharing a handler that writes to a single log file.
 Channels would allow you to identify the logger that issued every record.
@@ -166,10 +166,10 @@ You can easily grep through the log files filtering this or that channel.
 ```php
 <?php
 
-use Monolog\Level;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\FirePHPHandler;
+use Icoverlog\Level;
+use Icoverlog\Logger;
+use Icoverlog\Handler\StreamHandler;
+use Icoverlog\Handler\FirePHPHandler;
 
 // Create some handlers
 $stream = new StreamHandler(__DIR__.'/my_app.log', Level::Debug);
@@ -191,7 +191,7 @@ $securityLogger = $logger->withName('security');
 
 ## Customizing the log format
 
-In Monolog it's easy to customize the format of the logs written into files,
+In Icoverlog it's easy to customize the format of the logs written into files,
 sockets, mails, databases and other handlers; by the use of "Formatters".
 
 As mentioned before, a *Formatter* is attached to a *Handler*, and as a general convention, most of the handlers use the
@@ -252,7 +252,7 @@ are long-lived processes and do lots of logging over long periods of time, the
 memory usage of buffered handlers like FingersCrossedHandler or BufferHandler
 can rise quickly.
 
-Monolog provides the `ResettableInterface` for this use case, allowing you to
+Icoverlog provides the `ResettableInterface` for this use case, allowing you to
 end a log cycle and get things back to their initial state.
 
 Calling `$logger->reset();` means flushing/cleaning all buffers, resetting internal

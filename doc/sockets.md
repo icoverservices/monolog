@@ -15,8 +15,8 @@ Basic Example
 ```php
 <?php
 
-use Monolog\Logger;
-use Monolog\Handler\SocketHandler;
+use Icoverlog\Logger;
+use Icoverlog\Handler\SocketHandler;
 
 // Create the logger
 $logger = new Logger('my_logger');

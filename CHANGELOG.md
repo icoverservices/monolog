@@ -3,7 +3,7 @@
   * Added ability to indent stack traces in LineFormatter via e.g. `indentStacktraces('  ')` (#1835)
   * Added ability to configure a max level name length in LineFormatter via e.g. `setMaxLevelNameLength(3)` (#1850)
   * Added support for indexed arrays (i.e. `[]` and not `{}` arrays once json serialized) containing inline linebreaks in LineFormatter (#1818)
-  * Added `WithMonologChannel` attribute for integrators to use to configure autowiring (#1847)
+  * Added `WithIcoverlogChannel` attribute for integrators to use to configure autowiring (#1847)
   * Fixed log record `extra` data leaking between handlers that have handler-specific processors set (#1819)
   * Fixed LogglyHandler issue with record level filtering (#1841)
   * Fixed display_errors parsing in ErrorHandler which did not support string values (#1804)
@@ -13,7 +13,7 @@
 ### 3.4.0 (2023-06-21)
 
   * Added `LoadAverageProcessor` to track one of the 1, 5 or 15min load averages (#1803)
-  * Added support for priority to the `AsMonologProcessor` attribute (#1797)
+  * Added support for priority to the `AsIcoverlogProcessor` attribute (#1797)
   * Added `TelegramBotHandler` `topic`/`message_thread_id` support (#1802)
   * Fixed `FingersCrossedHandler` passthruLevel checking (#1801)
   * Fixed support of yearly and monthly rotation log file to rotate only once a month/year (#1805)
@@ -60,49 +60,49 @@
   * Added `Logger::useLoggingLoopDetection` to allow disabling cyclic logging detection in concurrent frameworks (#1681)
   * Fixed handling of fatal errors if callPrevious is disabled in ErrorHandler (#1670)
   * Fixed interop issue by removing the need for a return type in ProcessorInterface (#1680)
-  * Marked the reusable `Monolog\Test\TestCase` class as `@internal` to make sure PHPStorm does not show it above PHPUnit, you may still use it to test your own handlers/etc though (#1677)
+  * Marked the reusable `Icoverlog\Test\TestCase` class as `@internal` to make sure PHPStorm does not show it above PHPUnit, you may still use it to test your own handlers/etc though (#1677)
   * Fixed RotatingFileHandler issue when the date format contained slashes (#1671)
 
 ### 3.0.0 (2022-05-10)
 
 Changes from RC1
 
-- The `Monolog\LevelName` enum does not exist anymore, use `Monolog\Level->getName()` instead.
+- The `Icoverlog\LevelName` enum does not exist anymore, use `Icoverlog\Level->getName()` instead.
 
 ### 3.0.0-RC1 (2022-05-08)
 
 This is mostly a cleanup release offering stronger type guarantees for integrators with the
 array->object/enum changes, but there is no big new feature for end users.
 
-See [UPGRADE notes](UPGRADE.md#300) for details on all breaking changes especially if you are extending/implementing Monolog classes/interfaces.
+See [UPGRADE notes](UPGRADE.md#300) for details on all breaking changes especially if you are extending/implementing Icoverlog classes/interfaces.
 
 Noteworthy BC Breaks:
 
 - The minimum supported PHP version is now `8.1.0`.
-- Log records have been converted from an array to a [`Monolog\LogRecord` object](src/Monolog/LogRecord.php)
+- Log records have been converted from an array to a [`Icoverlog\LogRecord` object](src/Icoverlog/LogRecord.php)
   with public (and mostly readonly) properties. e.g. instead of doing
   `$record['context']` use `$record->context`.
   In formatters or handlers if you rather need an array to work with you can use `$record->toArray()`
-  to get back a Monolog 1/2 style record array. This will contain the enum values instead of enum cases
+  to get back a Icoverlog 1/2 style record array. This will contain the enum values instead of enum cases
   in the `level` and `level_name` keys to be more backwards compatible and use simpler data types.
 - `FormatterInterface`, `HandlerInterface`, `ProcessorInterface`, etc. changed to contain `LogRecord $record`
-  instead of `array $record` parameter types. If you want to support multiple Monolog versions this should
+  instead of `array $record` parameter types. If you want to support multiple Icoverlog versions this should
   be possible by type-hinting nothing, or `array|LogRecord` if you support PHP 8.0+. You can then code
-  against the $record using Monolog 2 style as LogRecord implements ArrayAccess for BC.
+  against the $record using Icoverlog 2 style as LogRecord implements ArrayAccess for BC.
   The interfaces do not require a `LogRecord` return type even where it would be applicable, but if you only
-  support Monolog 3 in integration code I would recommend you use `LogRecord` return types wherever fitting
-  to ensure forward compatibility as it may be added in Monolog 4.
-- Log levels are now enums [`Monolog\Level`](src/Monolog/Level.php) and [`Monolog\LevelName`](src/Monolog/LevelName.php)
+  support Icoverlog 3 in integration code I would recommend you use `LogRecord` return types wherever fitting
+  to ensure forward compatibility as it may be added in Icoverlog 4.
+- Log levels are now enums [`Icoverlog\Level`](src/Icoverlog/Level.php) and [`Icoverlog\LevelName`](src/Icoverlog/LevelName.php)
 - Removed deprecated SwiftMailerHandler, migrate to SymfonyMailerHandler instead.
 - `ResettableInterface::reset()` now requires a void return type.
 - All properties have had types added, which may require you to do so as well if you extended
-  a Monolog class and declared the same property.
+  a Icoverlog class and declared the same property.
 
 New deprecations:
 
-- `Logger::DEBUG`, `Logger::ERROR`, etc. are now deprecated in favor of the `Monolog\Level` enum.
+- `Logger::DEBUG`, `Logger::ERROR`, etc. are now deprecated in favor of the `Icoverlog\Level` enum.
   e.g. instead of `Logger::WARNING` use `Level::Warning` if you need to pass the enum case
-  to Monolog or one of its handlers, or `Level::Warning->value` if you need the integer
+  to Icoverlog or one of its handlers, or `Level::Warning->value` if you need the integer
   value equal to what `Logger::WARNING` was giving you.
 - `Logger::getLevelName()` is now deprecated.
 
@@ -146,7 +146,7 @@ New deprecations:
   * Added `$datetime` parameter to `Logger::addRecord` as low level API to allow logging into the past or future (#1682)
   * Added `Logger::useLoggingLoopDetection` to allow disabling cyclic logging detection in concurrent frameworks (#1681)
   * Fixed handling of fatal errors if callPrevious is disabled in ErrorHandler (#1670)
-  * Marked the reusable `Monolog\Test\TestCase` class as `@internal` to make sure PHPStorm does not show it above PHPUnit, you may still use it to test your own handlers/etc though (#1677)
+  * Marked the reusable `Icoverlog\Test\TestCase` class as `@internal` to make sure PHPStorm does not show it above PHPUnit, you may still use it to test your own handlers/etc though (#1677)
   * Fixed RotatingFileHandler issue when the date format contained slashes (#1671)
 
 ### 2.6.0 (2022-05-10)
@@ -161,14 +161,14 @@ New deprecations:
 ### 2.5.0 (2022-04-08)
 
   * Added `callType` to IntrospectionProcessor (#1612)
-  * Fixed AsMonologProcessor syntax to be compatible with PHP 7.2 (#1651)
+  * Fixed AsIcoverlogProcessor syntax to be compatible with PHP 7.2 (#1651)
 
 ### 2.4.0 (2022-03-14)
 
-  * Added [`Monolog\LogRecord`](src/Monolog/LogRecord.php) interface that can be used to type-hint records like `array|\Monolog\LogRecord $record` to be forward compatible with the upcoming Monolog 3 changes
+  * Added [`Icoverlog\LogRecord`](src/Icoverlog/LogRecord.php) interface that can be used to type-hint records like `array|\Icoverlog\LogRecord $record` to be forward compatible with the upcoming Icoverlog 3 changes
   * Added `includeStacktraces` constructor params to LineFormatter & JsonFormatter (#1603)
   * Added `persistent`, `timeout`, `writingTimeout`, `connectionTimeout`, `chunkSize` constructor params to SocketHandler and derivatives (#1600)
-  * Added `AsMonologProcessor` PHP attribute which can help autowiring / autoconfiguration of processors if frameworks / integrations decide to make use of it. This is useless when used purely with Monolog (#1637)
+  * Added `AsIcoverlogProcessor` PHP attribute which can help autowiring / autoconfiguration of processors if frameworks / integrations decide to make use of it. This is useless when used purely with Icoverlog (#1637)
   * Added support for keeping native BSON types as is in MongoDBFormatter (#1620)
   * Added support for a `user_agent` key in WebProcessor, disabled by default but you can use it by configuring the $extraFields you want (#1613)
   * Added support for username/userIcon in SlackWebhookHandler (#1617)
@@ -203,7 +203,7 @@ New deprecations:
 
 ### 2.3.0 (2021-07-05)
 
-  * Added a ton of PHPStan type annotations as well as type aliases on Monolog\Logger for Record, Level and LevelName that you can import (#1557)
+  * Added a ton of PHPStan type annotations as well as type aliases on Icoverlog\Logger for Record, Level and LevelName that you can import (#1557)
   * Added ability to customize date format when using JsonFormatter (#1561)
   * Fixed FilterHandler not calling reset on its internal handler when reset() is called on it (#1531)
   * Fixed SyslogUdpHandler not setting the timezone correctly on DateTimeImmutable instances (#1540)
@@ -349,14 +349,14 @@ New deprecations:
 
 ### 1.25.1 (2019-09-06)
 
-  * Fixed forward-compatible interfaces to be compatible with Monolog 1.x too.
+  * Fixed forward-compatible interfaces to be compatible with Icoverlog 1.x too.
 
 ### 1.25.0 (2019-09-06)
 
   * Deprecated SlackbotHandler, use SlackWebhookHandler or SlackHandler instead
-  * Deprecated RavenHandler, use sentry/sentry 2.x and their Sentry\Monolog\Handler instead
+  * Deprecated RavenHandler, use sentry/sentry 2.x and their Sentry\Icoverlog\Handler instead
   * Deprecated HipChatHandler, migrate to Slack and use SlackWebhookHandler or SlackHandler instead
-  * Added forward-compatible interfaces and traits FormattableHandlerInterface, FormattableHandlerTrait, ProcessableHandlerInterface, ProcessableHandlerTrait. If you use modern PHP and want to make code compatible with Monolog 1 and 2 this can help. You will have to require at least Monolog 1.25 though.
+  * Added forward-compatible interfaces and traits FormattableHandlerInterface, FormattableHandlerTrait, ProcessableHandlerInterface, ProcessableHandlerTrait. If you use modern PHP and want to make code compatible with Icoverlog 1 and 2 this can help. You will have to require at least Icoverlog 1.25 though.
   * Added support for RFC3164 (outdated BSD syslog protocol) to SyslogUdpHandler
   * Fixed issue in GroupHandler and WhatFailureGroupHandler where setting multiple processors would duplicate records
   * Fixed issue in SignalHandler restarting syscalls functionality
@@ -366,10 +366,10 @@ New deprecations:
 
 ### 1.24.0 (2018-11-05)
 
-  * BC Notice: If you are extending any of the Monolog's Formatters' `normalize` method, make sure you add the new `$depth = 0` argument to your function signature to avoid strict PHP warnings.
+  * BC Notice: If you are extending any of the Icoverlog's Formatters' `normalize` method, make sure you add the new `$depth = 0` argument to your function signature to avoid strict PHP warnings.
   * Added a `ResettableInterface` in order to reset/reset/clear/flush handlers and processors
   * Added a `ProcessorInterface` as an optional way to label a class as being a processor (mostly useful for autowiring dependency containers)
-  * Added a way to log signals being received using Monolog\SignalHandler
+  * Added a way to log signals being received using Icoverlog\SignalHandler
   * Added ability to customize error handling at the Logger level using Logger::setExceptionHandler
   * Added InsightOpsHandler to migrate users of the LogEntriesHandler
   * Added protection to NormalizerFormatter against circular and very deep structures, it now stops normalizing at a depth of 9
@@ -458,7 +458,7 @@ New deprecations:
 ### 1.18.0 (2016-03-01)
 
   * Added optional reduction of timestamp precision via `Logger->useMicrosecondTimestamps(false)`, disabling it gets you a bit of performance boost but reduces the precision to the second instead of microsecond
-  * Added possibility to skip some extra stack frames in IntrospectionProcessor if you have some library wrapping Monolog that is always adding frames
+  * Added possibility to skip some extra stack frames in IntrospectionProcessor if you have some library wrapping Icoverlog that is always adding frames
   * Added `Logger->withName` to clone a logger (keeping all handlers) with a new name
   * Added FluentdFormatter for the Fluentd unix socket protocol
   * Added HandlerWrapper base class to ease the creation of handler wrappers, just extend it and override as needed
@@ -472,7 +472,7 @@ New deprecations:
 
 ### 1.17.2 (2015-10-14)
 
-  * Fixed ErrorHandler compatibility with non-Monolog PSR-3 loggers
+  * Fixed ErrorHandler compatibility with non-Icoverlog PSR-3 loggers
   * Fixed SlackHandler handling to use slack functionalities better
   * Fixed SwiftMailerHandler bug when sending multiple emails they all had the same id
   * Fixed 5.3 compatibility regression
@@ -535,7 +535,7 @@ New deprecations:
 
 ### 1.12.0 (2014-12-29)
 
-  * Break: HandlerInterface::isHandling now receives a partial record containing only a level key. This was always the intent and does not break any Monolog handler but is strictly speaking a BC break and you should check if you relied on any other field in your own handlers.
+  * Break: HandlerInterface::isHandling now receives a partial record containing only a level key. This was always the intent and does not break any Icoverlog handler but is strictly speaking a BC break and you should check if you relied on any other field in your own handlers.
   * Added PsrHandler to forward records to another PSR-3 logger
   * Added SamplingHandler to wrap around a handler and include only every Nth record
   * Added MongoDBFormatter to support better storage with MongoDBHandler (it must be enabled manually for now)
@@ -600,7 +600,7 @@ New deprecations:
   * Added RollbarHandler to send logs to a Rollbar account
   * Added HtmlFormatter to send prettier log emails with colors for each log level
   * Added GitProcessor to add the current branch/commit to extra record data
-  * Added a Monolog\Registry class to allow easier global access to pre-configured loggers
+  * Added a Icoverlog\Registry class to allow easier global access to pre-configured loggers
   * Added support for the new official graylog2/gelf-php lib for GelfHandler, upgrade if you can by replacing the mlehner/gelf-php requirement
   * Added support for HHVM
   * Added support for Loggly batch uploads
@@ -630,10 +630,10 @@ New deprecations:
   * Added HipChatHandler to send logs to a HipChat chat room
   * Added ErrorLogHandler to send logs to PHP's error_log function
   * Added NewRelicHandler to send logs to NewRelic's service
-  * Added Monolog\ErrorHandler helper class to register a Logger as exception/error/fatal handler
+  * Added Icoverlog\ErrorHandler helper class to register a Logger as exception/error/fatal handler
   * Added ChannelLevelActivationStrategy for the FingersCrossedHandler to customize levels by channel
   * Added stack traces output when normalizing exceptions (json output & co)
-  * Added Monolog\Logger::API constant (currently 1)
+  * Added Icoverlog\Logger::API constant (currently 1)
   * Added support for ChromePHP's v4.0 extension
   * Added support for message priorities in PushoverHandler, see $highPriorityLevel and $emergencyLevel
   * Added support for sending messages to multiple users at once with the PushoverHandler
@@ -648,7 +648,7 @@ New deprecations:
   * Added ProcessIdProcessor to inject the PID in log records
   * Added UidProcessor to inject a unique identifier to all log records of one request/run
   * Added support for previous exceptions in the LineFormatter exception serialization
-  * Added Monolog\Logger::getLevels() to get all available levels
+  * Added Icoverlog\Logger::getLevels() to get all available levels
   * Fixed ChromePHPHandler so it avoids sending headers larger than Chrome can handle
 
 ### 1.4.1 (2013-04-01)
@@ -675,7 +675,7 @@ New deprecations:
 
 ### 1.3.0 (2013-01-08)
 
-  * Added PSR-3 compliance, the `Monolog\Logger` class is now an instance of `Psr\Log\LoggerInterface`
+  * Added PSR-3 compliance, the `Icoverlog\Logger` class is now an instance of `Psr\Log\LoggerInterface`
   * Added PsrLogMessageProcessor that you can selectively enable for full PSR-3 compliance
   * Added LogstashFormatter (combine with SocketHandler or StreamHandler to send logs to Logstash)
   * Added PushoverHandler to send mobile notifications
@@ -707,7 +707,7 @@ New deprecations:
 
 ### 1.1.0 (2012-04-23)
 
-  * Added Monolog\Logger::isHandling() to check if a handler will
+  * Added Icoverlog\Logger::isHandling() to check if a handler will
     handle the given log level
   * Added ChromePHPHandler
   * Added MongoDBHandler
@@ -725,7 +725,7 @@ New deprecations:
 ### 1.0.1 (2011-08-25)
 
   * Added MemoryPeakUsageProcessor and MemoryUsageProcessor
-  * Added Monolog\Logger::getName() to get a logger's channel name
+  * Added Icoverlog\Logger::getName() to get a logger's channel name
 
 ### 1.0.0 (2011-07-06)
 

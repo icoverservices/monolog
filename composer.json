@@ -53,10 +53,10 @@
         "ext-openssl": "Required to send log messages using SSL"
     },
     "autoload": {
-        "psr-4": {"Monolog\\": "src/Monolog"}
+        "psr-4": {"Icoverlog\\": "src/Icoverlog"}
     },
     "autoload-dev": {
-        "psr-4": {"Monolog\\": "tests/Monolog"}
+        "psr-4": {"Icoverlog\\": "tests/Icoverlog"}
     },
     "provide": {
         "psr/log-implementation": "3.0.0"
